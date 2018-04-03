@@ -1,7 +1,7 @@
 # snowflake-unlimited
 A snowflake Java implemented，but this one unlimited time.
 
-本 ID 生成器基于 Twitter Snowflake 算法，代码基于百度开源项目 uid-generator(https://github.com/baidu/uid-generator)，但都进行了一定改进。
+本 ID 生成器基于 Twitter Snowflake 算法，代码基于百度开源项目 uid-generator(https://github.com/baidu/uid-generator) ，但都进行了一定改进。
 
 传统 Snowflake 的结构如下：
 > sign ==== delta seconds ==== data center id ==== worker id ==== sequence
