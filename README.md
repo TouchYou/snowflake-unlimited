@@ -1,7 +1,7 @@
 # snowflake-unlimited
 A snowflake Java implemented，but this one unlimited time.
 
-本 ID 生成器基于 Twitter Snowflake 算法，代码基于百度开源项目 uid-generator(https://github.com/baidu/uid-generator) ，但都进行了一定改进。
+本 ID 生成器基于 Twitter Snowflake 算法以及百度开源项目 uid-generator(https://github.com/baidu/uid-generator) ，是一个可以运行时间无限长的雪花算法的 Java 实现。
 
 传统 Snowflake 的结构如下：
 > sign ==== delta seconds ==== data center id ==== worker id ==== sequence
@@ -26,7 +26,6 @@ A snowflake Java implemented，but this one unlimited time.
 > (其中 data center id + worker id + sequence < 63)
 
 即取消 sign 作为正负标识，取消总位数限制。当总位数 >= 64 时，改为使用 BigInteger 及其位运算实现。
-所以这是个可以运行时间无限长的雪花算法的 Java 实现。
 
 经测试，使用 BigInteger 的实现发号速度仍可达到单机 110w 左右。
 
