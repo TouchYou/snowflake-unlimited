@@ -6,12 +6,12 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import javax.annotation.Resource;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.Date;
@@ -56,9 +56,9 @@ import java.util.concurrent.TimeUnit;
  *
  * @author zhiguo.liu
  */
-@Component
+@Component("defaultUidGenerator")
 @ConditionalOnProperty(name = "data.center.id")
-public class DefaultUidGenerator implements UidGenerator, InitializingBean {
+public class DefaultUidGenerator implements UidGenerator ,InitializingBean{
     public static final String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     public static final String DAY_PATTERN = "yyyy-MM-dd";
 
@@ -98,16 +98,14 @@ public class DefaultUidGenerator implements UidGenerator, InitializingBean {
     /**
      * Spring property
      */
-    @Autowired
-    protected DisposableWorkerIdAssigner workerIdAssigner;
+    @Resource
+    protected DisposableWorkerIdAssigner disposableWorkerIdAssigner;
 
-    @Override
     public void afterPropertiesSet() throws Exception {
         // initialize bits allocator
         bitsAllocator = new BitsAllocator(timeBits, dataCenterIdBits, workerBits, seqBits);
-        workerIdAssigner = new DisposableWorkerIdAssigner();
         // initialize worker id
-        workerId = workerIdAssigner.assignWorkerId(dataCenterId, bitsAllocator);
+        workerId = disposableWorkerIdAssigner.assignWorkerId(dataCenterId, bitsAllocator);
         Assert.isTrue(workerId < bitsAllocator.getMaxWorkerId(), "workerId is too big");
         Assert.isTrue(dataCenterId < bitsAllocator.getMaxDataCenterId(), "dataCenterId is too big");
         LOGGER.info("Initialized bits dataCenterBits:{}, workerBits:{}, seqBits:{}", dataCenterIdBits, workerBits, seqBits);
@@ -124,7 +122,6 @@ public class DefaultUidGenerator implements UidGenerator, InitializingBean {
         }
     }
 
-    // TODO: 2018/3/5 反序列化 uid
     @Override
     public String parseUID(String uidStr) {
         BigInteger bigInteger = new BigInteger(uidStr);
@@ -234,7 +231,7 @@ public class DefaultUidGenerator implements UidGenerator, InitializingBean {
         }
     }
 
-    @Value("${uid.epochStr:2018-03-01}")
+    @Value("${uid.epochStr:2018-04-01}")
     public void setEpochStr(String epochStr) {
         if (StringUtils.isNotBlank(epochStr)) {
             this.epochStr = epochStr;
