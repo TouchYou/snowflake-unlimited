@@ -20,9 +20,20 @@ public class DefaultUidTest {
     private UidGenerator uidGenerator;
 
     @Test
-    public void test(){
-        String order = uidGenerator.getUID("");
-        System.out.println(order);
-        System.out.println(uidGenerator.parseUID(order));
+    public void test() {
+        long begin = System.currentTimeMillis();
+        for (int i = 0; i < 10000000; i++) {
+            uidGenerator.getUID("");
+        }
+        System.out.println(System.currentTimeMillis() - begin + "ms");
+    }
+
+    @Test
+    public void testBigInteger() {
+        long begin = System.currentTimeMillis();
+        for (int i = 0; i < 10000000; i++) {
+            uidGenerator.getUID("");
+        }
+        System.out.println(System.currentTimeMillis() - begin + "ms");
     }
 }
