@@ -25,9 +25,22 @@ A snowflake Java implemented，but this one unlimited time.
 > (其中 data center id + worker id + sequence < 63)
 
 即取消 sign 作为正负标识，取消总位数限制。当总位数 >= 64 时，改为使用 BigInteger 及其位运算实现。
+所以这是个可以运行时间无限长的雪花算法的 Java 实现。
+
 经测试，使用 BigInteger 的实现发号速度仍可达到单机 110w 左右。
 
-所以这是个可以运行时间无限长的雪花算法的 Java 实现。
+具体实现中，data center id 需要手动置顶，worker id 是以 data center id 作为 key ，在 redis 中用 incr 指令获取的数字，再取模 max_worker_id 得到的。
+max_worker_id 通过指定 worker id 的位数得到，如 worker id 位数为 8, max_worker_id 即 2^8 - 1 = 255。
+取得当前 worker id 为 1，则 1%255 = 1；如取得为 256，则 256%255=1。即成一个环形的可复用的获取  worker id 的方式。
+
+获取 worker id 的实现可根据需求自行修改。 
+
+
+## 使用方式
+- 引入除 Boostrap.java 外的文件。
+- 配置 data.center.id，uid.timeBits，uid.dataCenterIdBits，uid.workerBits，uid.seqBits，uid.epochStr，或使用默认配置。
+- 启动时使用 Spring 初始化需要的 Bean。
+- 使用时注入 UidGenerator，调用 getUID() 方法即可。
 
 
 
