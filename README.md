@@ -23,9 +23,10 @@ A snowflake Java implemented，but this one unlimited time.
 
 **本 ID 生成器结构如下：**
 
-> **delta seconds ==== data center id ==== worker id ==== sequence**
->
-> (其中 data center id + worker id + sequence < 63)
+| delta seconds | data center id | worker id | sequence |
+|:-:|:-:|:-:|:-:|
+
+(其中 data center id + worker id + sequence < 63)
 
 即取消 sign 作为正负标识，取消总位数限制。当总位数 >= 64 时，改为使用 BigInteger 及其位运算实现。
 
