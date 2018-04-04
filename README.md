@@ -11,6 +11,7 @@ A snowflake Java implemented，but this one unlimited time.
 (其中 sign 为整数的正负标识，固定 1 bit，其余各位一共 63 bits。)
 
 百度 uid-generator 结构如下：
+
 | sign | delta seconds | worker id | sequence |
 |:-:|:-:|:-:|:-:|
 
