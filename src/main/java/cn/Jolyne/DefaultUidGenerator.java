@@ -64,8 +64,6 @@ public class DefaultUidGenerator implements UidGenerator {
     /**
      * Bits allocate
      */
-    @Value("${uid.timeBits:28}")
-    protected int timeBits;
     @Value("${uid.dataCenterIdBits:9}")
     protected int dataCenterIdBits;
     @Value("${uid.workerBits:13}")
@@ -102,6 +100,7 @@ public class DefaultUidGenerator implements UidGenerator {
     @PostConstruct
     public void init() throws Exception {
         // initialize bits allocator
+        int timeBits = 64 - dataCenterIdBits - workerBits - seqBits;
         bitsAllocator = new BitsAllocator(timeBits, dataCenterIdBits, workerBits, seqBits);
         // initialize worker id
         workerId = disposableWorkerIdAssigner.assignWorkerId(dataCenterId, bitsAllocator);
@@ -216,12 +215,6 @@ public class DefaultUidGenerator implements UidGenerator {
      */
     private long getCurrentSecond() {
         return TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-    }
-
-    public void setTimeBits(int timeBits) {
-        if (timeBits > 0) {
-            this.timeBits = timeBits;
-        }
     }
 
     public void setWorkerBits(int workerBits) {

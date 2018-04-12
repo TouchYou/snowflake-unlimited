@@ -22,8 +22,10 @@ public class DefaultUidTest {
     @Test
     public void test() {
         long begin = System.currentTimeMillis();
-        for (int i = 0; i < 10000000; i++) {
-            uidGenerator.getUID("");
+        for (int i = 0; i < 10; i++) {
+            String uid = uidGenerator.getUID("");
+            System.out.println(uid);
+            System.out.println(uidGenerator.parseUID(uid));
         }
         System.out.println(System.currentTimeMillis() - begin + "ms");
     }
