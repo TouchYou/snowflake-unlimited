@@ -100,7 +100,7 @@ public class DefaultUidGenerator implements UidGenerator {
     @PostConstruct
     public void init() throws Exception {
         // initialize bits allocator
-        int timeBits = 64 - dataCenterIdBits - workerBits - seqBits;
+        int timeBits = 64 - 1 - dataCenterIdBits - workerBits - seqBits;
         bitsAllocator = new BitsAllocator(timeBits, dataCenterIdBits, workerBits, seqBits);
         // initialize worker id
         workerId = disposableWorkerIdAssigner.assignWorkerId(dataCenterId, bitsAllocator);
