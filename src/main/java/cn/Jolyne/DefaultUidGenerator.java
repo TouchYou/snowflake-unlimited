@@ -143,8 +143,6 @@ public class DefaultUidGenerator implements UidGenerator {
             return String.format("{\"UID\":\"%d\",\"timestamp\":\"%s\",\"dataCenterId\":\"%d\",\"workerId\":\"%d\",\"sequence\":\"%d\"}",
                     uid, thatTimeStr, dataCenterId, workerId, sequence);
         } else {
-            BigInteger workerBig = getBigIntegerFromLength(workerIdBits).shiftLeft((int) sequenceBits).and(bigInteger);
-            System.out.println(workerBig);
             long sequence = getBigIntegerFromLength(sequenceBits).and(bigInteger).longValue();
             long workerId = getBigIntegerFromLength(workerIdBits).and(bigInteger.shiftRight((int) sequenceBits)).longValue();
             long dataCenterId = getBigIntegerFromLength(dataCenterIdBits).and(bigInteger.shiftRight((int) sequenceBits + (int) workerIdBits)).longValue();
